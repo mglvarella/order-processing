@@ -22,7 +22,7 @@ This is a production-ready order processing system built with [NestJS](https://g
 ## Prerequisites
 
 - Node.js (v18 or higher)
-- npm or yarn
+- npm
 - PostgreSQL 15 (or use Docker)
 - Docker and Docker Compose (optional, for running PostgreSQL)
 
@@ -104,40 +104,6 @@ curl -X POST http://localhost:3000/order \
   }'
 ```
 
-## Run Tests
-
-```bash
-# unit tests
-$ npm run test
-
-# unit tests in watch mode
-$ npm run test:watch
-
-# test coverage
-$ npm run test:cov
-
-# e2e tests
-$ npm run test:e2e
-```
-
-## Code Quality
-
-### Linting
-
-```bash
-$ npm run lint
-```
-
-Fixes linting issues automatically using ESLint.
-
-### Formatting
-
-```bash
-$ npm run format
-```
-
-Formats code using Prettier according to [.prettierrc](.prettierrc).
-
 ## Project Structure
 
 ```
@@ -149,6 +115,8 @@ src/
 │   ├── entities/          # TypeORM entities
 │   │   ├── order.entity.ts
 │   │   └── item.entity.ts
+│   ├── mappers/          # Mappers
+│   │   └── order.mapper.ts
 │   ├── order.controller.ts
 │   ├── order.service.ts
 │   ├── order.module.ts
