@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn } from 'typeorm';
+import { Entity, Column, OneToMany, CreateDateColumn, PrimaryColumn } from 'typeorm';
 import { Item } from './item.entity';
 
 @Entity()
 export class Order {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     orderId: number;
 
     @Column('decimal', { precision: 10, scale: 2 })

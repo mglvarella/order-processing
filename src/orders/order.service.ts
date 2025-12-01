@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,7 +17,15 @@ export class OrdersService {
   ) {}
 
   async create(createOrderDto: CreateOrderDto) {
-    const { orderId, value, items } = createOrderDto;
+    const { orderId, items, value } = createOrderDto;
+
+    const alreadyExists = await this.orderRepository.exists({
+      where: { orderId },
+    });
+
+    if (alreadyExists) {
+      throw new ConflictException(`Order ${orderId} already exists`);
+    }
 
     const order = this.orderRepository.create({
       orderId,
@@ -27,15 +35,25 @@ export class OrdersService {
     });
 
     const savedOrder = await this.orderRepository.save(order);
+
     return savedOrder;
-}
+  }
 
   findAll() {
     return `This action returns all orders`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findOne(id: number) {
+    const order = await this.orderRepository.findOne({
+      where: { orderId: id },
+      relations: ['items'],
+    });
+
+    if (!order) {
+      throw new NotFoundException(`Order #${id} not found`);
+    }
+
+    return order;
   }
 
   update(id: number, updateOrderDto: UpdateOrderDto) {
