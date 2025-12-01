@@ -39,8 +39,8 @@ export class OrdersService {
     return savedOrder;
   }
 
-  findAll() {
-    return `This action returns all orders`;
+  async findAll() {
+    return await this.orderRepository.find({ relations: ['items'] });
   }
 
   async findOne(id: number) {
