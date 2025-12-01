@@ -1,7 +1,10 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsDateString, IsNotEmpty, IsNumber, ValidateNested } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, ValidateNested } from 'class-validator';
 
 class CreateItemDto {
+    @IsNumber()
+    id: number;
+
     @IsNumber()
     @IsNotEmpty()
     productId: number;
@@ -18,10 +21,11 @@ class CreateItemDto {
 export class CreateOrderDto {
     @IsNumber()
     @IsNotEmpty()
-    value: number;
+    orderId: number;
 
-    @IsDateString()
-    creationDate: string;
+    @IsNumber()
+    @IsNotEmpty()
+    value: number;
 
     @IsArray()
     @ValidateNested({ each: true })
