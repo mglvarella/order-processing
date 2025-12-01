@@ -9,7 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     OrdersModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'postgres',
       port: 5432,
       username: 'nestuser',
       password: 'nestpassword',

@@ -28,7 +28,57 @@ This is a production-ready order processing system built with [NestJS](https://g
 
 ## Project Setup
 
-### 1. Install dependencies
+### Build and Run everything with Docker Compose
+
+This project includes a Docker Compose setup to run the API and a Postgres database.
+
+1. Build and start services (production image uses the included .dockerfile):
+
+```bash
+# Build images and start containers in background
+docker-compose up --build -d
+```
+
+2. Stop and remove containers:
+
+```bash
+docker-compose down
+```
+
+3. View logs for the API service:
+
+```bash
+# follow logs
+docker-compose logs -f api
+```
+
+4. Quick checks
+
+```bash
+# test root endpoint
+curl -v http://localhost:3000/
+
+# check Swagger UI (after the app is up)
+http://localhost:3000/api
+```
+
+Notes:
+- The Compose file maps port 3000 on the host to the API container. Access the API at http://localhost:3000.
+- The provided .dockerfile builds the app and starts it with the production script (`npm run start:prod`). If you want to run in development mode with hot-reload inside a container, add a bind mount and override the command in the compose file:
+
+```yaml
+# dev override example (do not use in production)
+services:
+  api:
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: ["npm", "run", "start:dev"]
+```
+
+## Or youn can
+
+### Install dependencies
 
 ```bash
 $ npm install
@@ -36,24 +86,11 @@ $ npm install
 
 ### 2. Set up PostgreSQL
 
-**Option A: Using Docker Compose (Recommended)**
-
-```bash
-$ docker-compose up -d
-```
-
-This will start a PostgreSQL container with the following credentials:
-- Host: `localhost`
-- Port: `5432`
-- Username: `nestuser`
-- Password: `nestpassword`
-- Database: `nestdb`
-
-**Option B: Use existing PostgreSQL instance**
+**Use existing PostgreSQL instance**
 
 Update the database configuration in [src/app.module.ts](src/app.module.ts) with your PostgreSQL credentials.
 
-## Compile and Run the Project
+###Compile and Run the Project
 
 ```bash
 # development
