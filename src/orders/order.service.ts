@@ -1,10 +1,14 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { Item } from './entities/item.entity';
 import { Order } from './entities/order.entity';
-import { Repository } from 'typeorm';
+
+import { CreateOrderInputDto } from './dto/input-order.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
+
+import { mapPedido } from './mappers/order.mapper';
 
 @Injectable()
 export class OrdersService {
@@ -16,8 +20,10 @@ export class OrdersService {
     private readonly itemRepository: Repository<Item>,
   ) {}
 
-  async create(createOrderDto: CreateOrderDto) {
-    const { orderId, items, value } = createOrderDto;
+  async create(createOrderInputDto: CreateOrderInputDto) {
+    const mapped = mapPedido(createOrderInputDto);
+
+    const { orderId, items, value, creationDate } = mapped;
 
     const alreadyExists = await this.orderRepository.exists({
       where: { orderId },
@@ -30,20 +36,18 @@ export class OrdersService {
     const order = this.orderRepository.create({
       orderId,
       value,
-      creationDate: new Date(),
+      creationDate,
       items: items.map(i => this.itemRepository.create(i)),
     });
 
-    const savedOrder = await this.orderRepository.save(order);
-
-    return savedOrder;
+    return await this.orderRepository.save(order);
   }
 
   async findAll() {
     return await this.orderRepository.find({ relations: ['items'] });
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const order = await this.orderRepository.findOne({
       where: { orderId: id },
       relations: ['items'],
@@ -56,20 +60,21 @@ export class OrdersService {
     return order;
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  update(id: string, updateOrderDto: UpdateOrderDto) {
+    return `This action updates order #${id}`;
   }
 
-  async remove(id: number) {
-
-    const checkIfExists = await this.orderRepository.exists({
+  async remove(id: string) {
+    const exists = await this.orderRepository.exists({
       where: { orderId: id },
     });
 
-    if (!checkIfExists) {
+    if (!exists) {
       throw new NotFoundException(`Order #${id} not found`);
     }
-    
+
     await this.orderRepository.delete({ orderId: id });
+
+    return { message: `Order #${id} deleted successfully` };
   }
 }

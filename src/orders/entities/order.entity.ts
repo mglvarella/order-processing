@@ -3,15 +3,15 @@ import { Item } from './item.entity';
 
 @Entity()
 export class Order {
-    @PrimaryColumn()
-    orderId: number;
+  @PrimaryColumn()
+  orderId: string;
 
-    @Column('decimal', { precision: 10, scale: 2 })
-    value: number;
+  @Column('decimal', { precision: 10, scale: 2 })
+  value: number;
 
-    @CreateDateColumn()
-    creationDate: Date;
+  @CreateDateColumn()
+  creationDate: Date;
 
-    @OneToMany(() => Item, item => item.orderId, { cascade: true })
-    items: Item[];
+  @OneToMany(() => Item, item => item.order, { cascade: true })
+  items: Item[];
 }
