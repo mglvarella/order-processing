@@ -60,7 +60,16 @@ export class OrdersService {
     return `This action updates a #${id} order`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  async remove(id: number) {
+
+    const checkIfExists = await this.orderRepository.exists({
+      where: { orderId: id },
+    });
+
+    if (!checkIfExists) {
+      throw new NotFoundException(`Order #${id} not found`);
+    }
+    
+    await this.orderRepository.delete({ orderId: id });
   }
 }
