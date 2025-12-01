@@ -60,8 +60,19 @@ export class OrdersService {
     return order;
   }
 
-  update(id: string, updateOrderDto: UpdateOrderDto) {
-    return `This action updates order #${id}`;
+  async update(id: string, updateOrderDto: UpdateOrderDto) {
+    const order = await this.orderRepository.findOne({
+      where: { orderId: id },
+    });
+
+    if (!order) {
+      throw new NotFoundException(`Order #${id} not found`);
+    }
+
+    const updatedOrder = this.orderRepository.merge(order, updateOrderDto);
+    await this.orderRepository.save(order);
+
+    return updatedOrder;
   }
 
   async remove(id: string) {

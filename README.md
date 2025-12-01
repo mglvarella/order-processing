@@ -167,4 +167,4 @@ DB_DATABASE=nestdb
 
 ## License
 
-This project is [UNLICENSED](LICENSE).
+[MIT LICENSE](LICENSE).
