@@ -85,6 +85,24 @@ The API will be available at `http://localhost:3000`
 - `PATCH /order/:id` - Update an order
 - `DELETE /order/:id` - Delete an order
 
+
+## Interactive API Documentation (Swagger)
+
+This project provides interactive API documentation using [Swagger](https://swagger.io/).  
+After starting the application, access:
+
+```
+http://localhost:3000/api
+```
+
+With Swagger, you can:
+
+- Explore all available endpoints
+- Test requests directly from your browser
+- View example payloads and responses
+
+> Swagger is enabled by default in development mode.
+
 ### Example Request: Create Order
 
 ```bash
