@@ -17,7 +17,6 @@ This is a production-ready order processing system built with [NestJS](https://g
 - **Data Validation**: Request validation using class-validator and class-transformer
 - **Database**: PostgreSQL with TypeORM ORM
 - **Error Handling**: Comprehensive exception handling with proper HTTP status codes
-- **Testing**: Unit tests and e2e tests with Jest
 
 ## Prerequisites
 
@@ -32,7 +31,7 @@ This is a production-ready order processing system built with [NestJS](https://g
 
 This project includes a Docker Compose setup to run the API and a Postgres database.
 
-1. Build and start services (production image uses the included .dockerfile):
+1. Build and start services:
 
 ```bash
 # Build images and start containers in background
@@ -64,19 +63,8 @@ http://localhost:3000/api
 
 Notes:
 - The Compose file maps port 3000 on the host to the API container. Access the API at http://localhost:3000.
-- The provided .dockerfile builds the app and starts it with the production script (`npm run start:prod`). If you want to run in development mode with hot-reload inside a container, add a bind mount and override the command in the compose file:
 
-```yaml
-# dev override example (do not use in production)
-services:
-  api:
-    volumes:
-      - .:/app
-      - /app/node_modules
-    command: ["npm", "run", "start:dev"]
-```
-
-## Or youn can
+## Or you can
 
 ### Install dependencies
 
@@ -90,7 +78,7 @@ $ npm install
 
 Update the database configuration in [src/app.module.ts](src/app.module.ts) with your PostgreSQL credentials.
 
-###Compile and Run the Project
+### Compile and Run the Project
 
 ```bash
 # development
@@ -217,7 +205,6 @@ DB_DATABASE=nestdb
 - **PostgreSQL** - Database
 - **class-validator** - Request validation
 - **class-transformer** - DTO transformation
-- **Jest** - Testing framework
 - **TypeScript** ^5.7.3 - Language
 
 ## License
